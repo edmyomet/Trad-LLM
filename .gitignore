@@ -1,0 +1,4 @@
+#ignore python virtual environment setup
+tenv/
+#ignore massive pdf files
+data/doc/

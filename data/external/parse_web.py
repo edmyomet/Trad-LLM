@@ -18,5 +18,11 @@ url_list:list[str] = [
     "https://pubmed.ncbi.nlm.nih.gov/27011715/",
     "https://pubmed.ncbi.nlm.nih.gov/35929620/",
     "https://pubmed.ncbi.nlm.nih.gov/39138188/",
+    "https://www.wbhealth.gov.in/WBSMPB/32_prioritized_species_enlisted_by_NMPB.php",
+    "https://www.wbhealth.gov.in/WBSMPB/district_wise_suitability_for_cultivation.php",
+    "https://www.wbhealth.gov.in/WBSMPB/32_consumption_medicinal_plants%20in_ayurvedic.php",
+    "https://www.wbhealth.gov.in/WBSMPB/medicinal_plants_related_web_site.php",
+    "https://www.sciencedirect.com/science/article/pii/S0975947623001249",
+    
 ]
 

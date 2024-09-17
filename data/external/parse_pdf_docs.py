@@ -1,8 +1,6 @@
 import json
 import pdfplumber
 
-
-
 class Extract_EDL:
     file_path:str=""
     output_file_path:str=""
@@ -47,4 +45,4 @@ def main(**kwargs):
         et.extract_and_format(input_file_path=rf'../../data/doc/pdf-{i}.pdf')
     
 if __name__ == '__main__':
-    main(output_file_path=rf'../../data/raw/pdf.json',start=1,end=28)
+    main(output_file_path=rf'../../data/raw/pdf.json',start=29,end=48)
