@@ -5,16 +5,17 @@ class LowerCase:
     json_data:dict={}
     lowercase_data:dict={'Data':[]}
     def __init__(self,**kwargs):
-        self.file_path = kwargs['file_path']
-    def __load_data(self)->dict:
+        self.file_path = kwargs['file_path'] 
+    
+    def __load_data(self):
         with open(self.file_path,'r',encoding='utf-8') as file:
             return json.load(file)
     def __to_lowercase(self,**kwargs):
-        for i in range(kwargs['start']-1,kwargs['end']-1):
-            for key,value_list in self.json_data['Data'][i].items():
-                for j in range(len(value_list)):
-                    value_list[j] = value_list[j].lower()
-                    self.lowercase_data['Data'][i][key].append(value_list[j])
+            for i in range(kwargs['start']-1,kwargs['end']-1):
+                for key,value_list in self.json_data['Data'][i].items():
+                    for j in range(len(value_list)):
+                        value_list[j] = value_list[j].lower()
+                        self.lowercase_data['Data'][i][key].append(value_list[j])
     def lowercasing(self,**kwargs):
         self.json_data = self.__load_data()
         self.lowercase_data['Data'] = [{header:[] for header in self.json_data['Data'][0].keys()} for _ in range(kwargs['start']-1, kwargs['end'])]
@@ -30,4 +31,4 @@ def main(**kwargs):
     lc.convert(output_file_path=kwargs['output_file_path'])
 
 if __name__ == '__main__':
-    main(file_path=rf'./raw/pdf.json',output_file_path=rf'./processed/lowercasing/lpdf.json',start=1,end=48)
+    main(file_path=rf'./raw/web-1.json',output_file_path=rf'./processed/lowercasing/lpdf-1.json',start=1,end=48)

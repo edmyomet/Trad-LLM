@@ -2,9 +2,12 @@ from tokenizers import Tokenizer
 from tokenizers.models import BPE
 from tokenizers.trainers import BpeTrainer
 from tokenizers.pre_tokenizers import Whitespace
-
+import string
 import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
 from nltk.corpus import stopwords
+from string import punctuation
 
 import json
 from collections import Counter
@@ -21,11 +24,13 @@ class SubWordTokenizer:
     corpus:list[str]=[]
     json_data:dict={}
     encoded:dict={}
+    stopwords:set=set()
     def __init__(self,**kwargs):
         self.tokenizer = Tokenizer(BPE())
         self.tokenizer.pre_tokenizer = Whitespace()
         self.json_data = get_json_data(file_path=kwargs['file_path'])
         self.encoded['Data'] = [{header:[] for header in self.json_data['Data'][0].keys()} for _ in range(kwargs['start']-1,kwargs['end'])]
+        self.stopwords = set(stopwords.words('english'))
         
     def __build_trainer(self,**kwargs):
         vocab_size,min_freq = kwargs['vocab_size'], kwargs['min_freq']
@@ -40,11 +45,10 @@ class SubWordTokenizer:
     def __encode(self,**kwargs):
         for i in range(kwargs['start']-1,kwargs['end']):
             for key,value_list in self.json_data['Data'][i].items():
-                tmp = []
                 for sentence in value_list:
-                    tmp.append(self.tokenizer.encode(sentence).tokens)
-                self.encoded['Data'][i][key].append(tmp)
-        with open(kwargs['output_file_path'],'a+',encoding='utf-8') as file:
+                    encoded_tmp = [token for token in self.tokenizer.encode(sentence).tokens if token not in self.stopwords and token not in string.punctuation]
+                    self.encoded['Data'][i][key].append(encoded_tmp)
+        with open(kwargs['output_file_path'],'w+',encoding='utf-8') as file:
             json.dump(self.encoded,file,ensure_ascii=False,indent=4)
                     
     def __save_tokenizer(self,**kwargs):
@@ -63,11 +67,11 @@ class CharacterTokenizer:
     pass
 
 def main(**kwargs):
-    swt = SubWordTokenizer(file_path='./processed/lowercasing/lpdf.json',start=1,end=48)
+    swt = SubWordTokenizer(file_path='./processed/lowercasing/lpdf-1.json',start=1,end=48)
     swt.train_encode(vocab_size=kwargs['vocab_size'],min_freq=kwargs['min_freq'],start=1,end=48,
                      save_path=kwargs['save_path'],output_file_path=kwargs['output_file_path'])
     
 
 if __name__ == '__main__':
     main(vocab_size=20000,min_freq=2,save_path=rf'./processed/tokenised/tokeniser_config.json',
-         output_file_path=rf'./processed/tokenised/tokenised-pdf.json')
+         output_file_path=rf'./processed/tokenised/tokenised-web.json')

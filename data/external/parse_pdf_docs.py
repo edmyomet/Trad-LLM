@@ -9,12 +9,13 @@ class Extract_EDL:
         'Methods','Methodology', 'Observations', 'Clinical', 'Experiments', 'Effects','Results','conclusion',
         'References','Acknowledgement'
     ]
-    data:dict[str]={sect:[] for sect in section_headers}
+    data:dict[str]={}
     
     def __init__(self,**kwargs):
         #self.file_path = kwargs['file_path']
         self.output_file_path = kwargs['output_file_path']
-    
+        self.data['Data'] = [{header:[] for header in self.section_headers} for _ in range(kwargs['start']-1,kwargs['end'])]
+        #self.start = kwargs['start']-1
     def __extract_data(self,**kwargs):
         section_title = kwargs['header']
         self.file_path = kwargs['input_file_path']
@@ -29,9 +30,9 @@ class Extract_EDL:
                     elif in_section and line.strip() == '':
                         break
                     elif in_section:
-                        self.data[section_title].append(line.strip())
+                        self.data['Data'][self.start][section_title].append(line.strip())
     def __format(self):
-        with open(self.output_file_path,'a+',encoding='utf-8') as json_file:
+        with open(self.output_file_path,'w+',encoding='utf-8') as json_file:
             json.dump(self.data, json_file,indent=4,ensure_ascii=False)
     
     def extract_and_format(self,**kwargs):
@@ -40,9 +41,11 @@ class Extract_EDL:
         self.__format()
     
 def main(**kwargs):
-    et = Extract_EDL(output_file_path=kwargs['output_file_path'])
-    for i in range(kwargs['start'],kwargs['end']+1):
-        et.extract_and_format(input_file_path=rf'../../data/doc/pdf-{i}.pdf')
+    et = Extract_EDL(output_file_path=kwargs['output_file_path'],start=kwargs['start'],end=kwargs['end'])
+    for i in range(kwargs['start'],kwargs['end']):
+        et.start = i
+        et.extract_and_format(input_file_path=rf"../../data/doc/pdf-{i+1}.pdf")
+        
     
 if __name__ == '__main__':
-    main(output_file_path=rf'../../data/raw/pdf.json',start=29,end=48)
+    main(output_file_path=rf'../../data/raw/pdf-2.json',start=0,end=66)
