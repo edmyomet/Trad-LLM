@@ -44,8 +44,8 @@ def main(**kwargs):
     et = Extract_EDL(output_file_path=kwargs['output_file_path'],start=kwargs['start'],end=kwargs['end'])
     for i in range(kwargs['start'],kwargs['end']):
         et.start = i
-        et.extract_and_format(input_file_path=rf"../../data/doc/pdf-{i+1}.pdf")
+        et.extract_and_format(input_file_path=rf"../../data/doc/image_pdf/pdf-{i+1}.pdf")
         
     
 if __name__ == '__main__':
-    main(output_file_path=rf'../../data/raw/pdf-2.json',start=0,end=66)
+    main(output_file_path=rf'../../data/raw/pdf-2.json',start=0,end=100)

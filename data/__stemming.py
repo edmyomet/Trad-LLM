@@ -40,7 +40,7 @@ def main(**kwargs):
     stem.stem_and_save(output_file=kwargs['output_file'])
 
 if __name__ == '__main__':
-    main(file_path=rf'./processed/lowercasing/lpdf-1.json',output_file=rf'./processed/stemmed/stemmed-web.json')
+    main(file_path=rf'./processed/lowercasing/lpdf.json',output_file=rf'./processed/stemmed/stemmed-pdf.json')
 
                     
             
